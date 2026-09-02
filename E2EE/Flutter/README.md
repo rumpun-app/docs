@@ -8,12 +8,14 @@ A focused path for integrating the native Rumpun E2EE SDK into a Flutter applica
 
 1. [Install and initialize](getting-started.md)
 2. [Manage lifecycle and groups](lifecycle-and-groups.md)
-3. [Encrypt, decrypt, and re-key objects](object-encryption.md)
-4. [Test Flutter end-to-end](end-to-end-testing.md)
+3. [Manage family members and devices](members-and-devices.md)
+4. [Encrypt, decrypt, and re-key objects](object-encryption.md)
+5. [Test Flutter end-to-end](end-to-end-testing.md)
 
 ## Choose what you need
 
 - **New integration:** start with installation, then lifecycle and groups.
+- **Inviting or removing people/devices:** use the member and device management guide.
 - **Encrypting application data:** use the object encryption guide.
 - **Writing CI or regression tests:** use the end-to-end testing guide.
 
