@@ -7,8 +7,16 @@ Rumpun E2EE SDK is the privacy and cryptographic foundation for the proprietary 
 ## Documentation
 
 - [Core concepts](concepts.md): architecture, handles, mutations, outcomes, persistence, and security boundaries.
+- [Object encryption, decryption, and re-keying](object-encryption.md): complete Web/TypeScript and Flutter examples, bundle fields, bounds, storage, and failure rules.
 - [Web and TypeScript guide](web-typescript.md): build, initialize, enroll, create or restore state, and handle errors.
 - [Flutter and native guide](flutter-native.md): generated FRB setup, lifecycle operations, outcomes, cancellation, and cleanup.
+
+## Quick path
+
+1. Read [Core concepts](concepts.md).
+2. Set up the lifecycle using the platform guide.
+3. Follow [Object encryption, decryption, and re-keying](object-encryption.md).
+4. Keep `NOT_PRODUCTION_SAFE` enforced until Task 6 and Gate G are accepted.
 
 ## What the SDK owns
 
