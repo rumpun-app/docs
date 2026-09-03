@@ -1,0 +1,44 @@
+$schema: https://api.gitbook.com/gitbook-docs.yaml
+site:
+  title: Rumpun Docs
+  structure:
+    - type: section
+      key: section-1
+      title: Rumpun Docs
+      path: rumpun-docs
+      default: true
+      children:
+        - type: space
+          key: space-1
+          title: Untitled
+          path: untitled
+          default: true
+          content:
+            directory: ./rumpun-docs/untitled
+            language: id
+    - type: section
+      key: section-2
+      title: Help Center
+      path: help-center
+      children:
+        - type: space
+          key: space-2
+          title: Help Center
+          path: help-center
+          default: true
+          draft: true
+          content:
+            directory: ./help-center/help-center
+    - type: section
+      key: section-3
+      title: Changelog
+      path: changelog
+      children:
+        - type: space
+          key: space-3
+          title: Changelog
+          path: changelog
+          default: true
+          draft: true
+          content:
+            directory: ./changelog/changelog
