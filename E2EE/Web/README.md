@@ -1,6 +1,6 @@
 # Rumpun E2EE SDK for Web and TypeScript
 
-A focused path for integrating the Rumpun WebAssembly adapter into a browser application.
+A focused path for integrating the WebAssembly adapter into a browser application.
 
 > **Current status: `NOT_PRODUCTION_SAFE`.** Use synthetic data only. Production authorization remains unavailable until Task 6 and Gate G release acceptance.
 
@@ -8,36 +8,26 @@ A focused path for integrating the Rumpun WebAssembly adapter into a browser app
 
 ### Guides
 
-1. [Install, initialize, enroll, restore, and dispose](../web-typescript.md)
-2. [Encrypt, decrypt, and re-key objects](../object-encryption.md)
-3. [Core concepts and security boundaries](../concepts.md)
+1. [Install and initialize](getting-started.md)
+2. [Manage lifecycle and groups](lifecycle-and-groups.md)
+3. [Manage family members and devices](members-and-devices.md)
+4. [Encrypt, decrypt, and re-key objects](object-encryption.md)
+5. [Test Web end-to-end](end-to-end-testing.md)
+6. [Understand shared security concepts](../Shared/concepts.md)
 
 ### API reference
 
-4. [All callable Web SDK APIs](api-reference.md)
-   - lifecycle opening and disposal
-   - enrollment and restoration
-   - group creation, lookup, and inspection
-   - member and device mutations
-   - ordered Commit processing
-   - reconciliation
-   - object encryption, decryption, and CEK rewrap
-   - low-level contract-vector APIs
-5. [All public types, outcomes, errors, constants, and contract helpers](types-outcomes-errors.md)
-   - opaque branded values
-   - mutation control and operation IDs
-   - DTOs and object contexts
-   - publication outcomes
-   - complete stable error-code catalog
-   - version, ABI, handle, and contract registries
+7. [All callable Web SDK APIs](api-reference.md)
+8. [All public types, outcomes, errors, constants, and contract helpers](types-outcomes-errors.md)
 
 ## Choose what you need
 
-- **New integration:** start with the Web and TypeScript guide.
-- **Looking up a method signature:** use the callable API reference.
-- **Handling outcomes or errors:** use the types, outcomes, and errors reference.
-- **Encrypting application data:** use the object encryption guide.
-- **Testing contract vectors:** use the low-level API section, never production application code.
+- **New integration:** start with installation, then lifecycle and groups.
+- **Inviting or removing people/devices:** use member and device management.
+- **Encrypting application data:** use object encryption.
+- **Looking up a signature:** use the callable API reference.
+- **Handling outcomes or errors:** use the types and contract reference.
+- **Writing browser, cross-tab, or parity tests:** use end-to-end testing.
 
 ## Runtime model
 
@@ -46,9 +36,8 @@ Browser application
   -> thin TypeScript wrapper
   -> generated WASM boundary
   -> authoritative Rust lifecycle
-  -> WebCrypto-backed secure operations
   -> IndexedDB sealed persistence
-  -> Web Lock per device identity
+  -> exclusive Web Lock per device identity
 ```
 
 TypeScript does not implement MLS, cryptography, AAD construction, authorization, sealing, or state serialization.
@@ -59,21 +48,16 @@ TypeScript does not implement MLS, cryptography, AAD construction, authorization
 - Never serialize, decode, log, or reconstruct lifecycle, device, or group handles.
 - Never add fallback WebCrypto or JavaScript cryptography.
 - Never treat ciphertext, a signature, or a group ID as authorization.
-- Never replay an `Ambiguous` mutation automatically.
-- Dispose the lifecycle before another tab or reload opens the same device identity.
+- Never retry an `Ambiguous` mutation automatically.
+- Dispose before another tab or reload opens the same device identity.
 - Keep plaintext, keys, raw handles, and provider diagnostics out of logs and analytics.
 
-## Supported development environment
-
-The browser must provide WebAssembly, WebCrypto, IndexedDB, and Web Locks. Chromium development evidence is not a blanket production claim for every browser, operating system, or storage mode.
-
 ## Source of truth
-
-The reviewed public surface and executable example live in:
 
 - `packages/sdk-ts/src/index.ts`
 - `packages/sdk-ts/src/contract.ts`
 - `packages/sdk-ts/examples/quickstart.ts`
 - `packages/sdk-ts/tests/`
+- `packages/sdk-ts-integration/tests/`
 
-Always verify these docs against the exact SDK revision used by the application.
+Always verify documentation against the exact SDK revision used by the application.
