@@ -7,9 +7,9 @@ Rumpun E2EE SDK is the privacy and cryptographic foundation for the proprietary 
 ## Documentation
 
 - [Flutter documentation hub](Flutter/README.md): ordered guides, complete table of contents, every callable API, public type, outcome, and error.
+- [Web and TypeScript documentation hub](Web/README.md): complete table of contents, every callable API, public type, outcome, error, constant, and contract helper.
 - [Core concepts](concepts.md): architecture, handles, mutations, outcomes, persistence, and security boundaries.
-- [Object encryption, decryption, and re-keying](object-encryption.md): complete Web/TypeScript and Flutter examples, bundle fields, bounds, storage, and failure rules.
-- [Web and TypeScript guide](web-typescript.md): build, initialize, enroll, create or restore state, and handle errors.
+- [Cross-platform object encryption](object-encryption.md): Web/TypeScript and Flutter examples, bundle fields, bounds, storage, and failure rules.
 - [Flutter and native overview](flutter-native.md): generated FRB setup, lifecycle operations, outcomes, cancellation, and cleanup.
 
 ## Flutter quick path
@@ -18,8 +18,16 @@ Rumpun E2EE SDK is the privacy and cryptographic foundation for the proprietary 
 2. [Manage lifecycle and groups](Flutter/lifecycle-and-groups.md).
 3. [Manage family members and devices](Flutter/members-and-devices.md).
 4. [Encrypt, decrypt, and re-key objects](Flutter/object-encryption.md).
-5. Use the [complete API reference](Flutter/api-reference.md) and [types, outcomes, and errors](Flutter/types-outcomes-errors.md) while implementing.
+5. Use the [complete API reference](Flutter/api-reference.md) and [types, outcomes, and errors](Flutter/types-outcomes-errors.md).
 6. [Test the integration end-to-end](Flutter/end-to-end-testing.md).
+
+## Web quick path
+
+1. [Install and initialize the Web SDK](web-typescript.md).
+2. Use the [complete Web API reference](Web/api-reference.md).
+3. Handle public types, outcomes, errors, constants, and versions with the [Web contract reference](Web/types-outcomes-errors.md).
+4. Follow the [cross-platform object encryption guide](object-encryption.md).
+5. Re-check examples against `packages/sdk-ts/examples/quickstart.ts` at the exact SDK revision used by the application.
 
 ## What the SDK owns
 
