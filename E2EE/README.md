@@ -2,7 +2,9 @@
 
 Rumpun E2EE SDK is the privacy and cryptographic foundation for the proprietary Rumpun family archive. One authoritative Rust core is exposed through thin Web/TypeScript and Flutter/native adapters.
 
-> **Current status: `NOT_PRODUCTION_SAFE`.** Use synthetic data only until Task 6 production authorization and Gate G release acceptance.
+> **Current status: `NOT_PRODUCTION_SAFE`.** Use synthetic data only. Production
+> use requires accepted production-authority and release criteria; development
+> conformance never grants production authorization.
 
 ## Documentation map
 
@@ -22,6 +24,23 @@ Rumpun E2EE SDK is the privacy and cryptographic foundation for the proprietary 
 3. Follow lifecycle and membership guides before object encryption.
 4. Use the platform API and error references while implementing.
 5. Run the platform end-to-end suite with the exact pinned SDK revision.
+
+## Canonical SDK documentation
+
+This site is an application-integration guide. The SDK repository owns the
+normative security and adapter contracts. The links below are pinned to the SDK
+documentation reorganization at [`92081b3`](https://github.com/rumpun-app/rumpun-e2ee-sdk/commit/92081b3):
+
+- [SDK documentation index](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/README.md)
+- [Flutter/native quickstart](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/guides/flutter-quickstart.md)
+- [Web/WASM quickstart](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/guides/web-quickstart.md)
+- [MLS mapping](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/specifications/mls-mapping.md)
+- [Object-layer specification](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/specifications/object-layer-spec.md)
+- [`NOT_PRODUCTION_SAFE` removal criteria](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/specifications/not-production-safe-removal-criteria.md)
+
+When upgrading the SDK revision, update this reference set and revalidate the
+application against the public generated adapter API. Do not infer API or
+security semantics from a historical task record.
 
 ## Architecture
 
@@ -52,7 +71,10 @@ Application backend -> ciphertext and approved operational metadata only
 
 ## Production readiness
 
-Production use additionally requires Task 6 current authorization and authenticated transport, supported production persistence and secure-key providers, exact-head release evidence, independent security review, and explicit approval to remove `NOT_PRODUCTION_SAFE`.
+Production use additionally requires current authorization and authenticated
+transport, supported production persistence and secure-key providers,
+exact-head release evidence, independent security review, and explicit approval
+to remove `NOT_PRODUCTION_SAFE`.
 
 ## Source repositories
 

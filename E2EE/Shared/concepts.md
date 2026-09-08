@@ -2,7 +2,20 @@
 
 These rules apply equally to the Web/TypeScript and Flutter/native adapters.
 
-> **Status: `NOT_PRODUCTION_SAFE`.** Development conformance is not production authorization. Use synthetic data until Task 6 and Gate G release acceptance.
+> **Status: `NOT_PRODUCTION_SAFE`.** Development conformance is not production
+> authorization. Use synthetic data until the production-authority and release
+> criteria are accepted.
+
+## Canonical SDK references
+
+These concepts summarize, but do not replace, the canonical SDK documents
+pinned to revision [`92081b3`](https://github.com/rumpun-app/rumpun-e2ee-sdk/commit/92081b3):
+
+- [MLS mapping](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/specifications/mls-mapping.md)
+- [Object-layer specification](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/specifications/object-layer-spec.md)
+- [Threat model](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/specifications/threat-model.md)
+- [Operations, cancellation, and publication outcomes](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/guides/operations-cancellation-outcome.md)
+- [Ambiguity and explicit reconciliation](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/guides/ambiguity-reconciliation.md)
 
 ## One Rust core, thin adapters
 
@@ -65,4 +78,7 @@ Provider text, stack traces, plaintext, secret material, and raw capabilities mu
 
 Backends may receive ciphertext and minimum approved operational metadata. They must never receive family plaintext, CEKs, KWKs, exporter output, private keys, or recovery shares.
 
-Cryptographic validity proves integrity, not current membership or permission. Production operations remain unavailable until Task 6 verifies current account, session, device, family, scope, capability, versions, freshness, and replay identity.
+Cryptographic validity proves integrity, not current membership or permission.
+Production operations remain unavailable until an accepted authority path verifies
+the current account, session, device, family, scope, capability, versions,
+freshness, and replay identity.

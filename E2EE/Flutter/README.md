@@ -2,7 +2,9 @@
 
 A focused path for integrating the native Rumpun E2EE SDK into a Flutter application.
 
-> **Current status: `NOT_PRODUCTION_SAFE`.** Use synthetic data only. Production authorization remains unavailable until Task 6 and release review are accepted.
+> **Current status: `NOT_PRODUCTION_SAFE`.** Use synthetic data only. The
+> native adapter remains a development and integration surface until the SDK's
+> production-authority and release criteria are accepted.
 
 ## Complete table of contents
 
@@ -78,10 +80,14 @@ Android still requires NDK and device evidence. Apple targets require macOS, Xco
 
 ## Source of truth
 
-The executable Flutter example lives in the SDK repository:
+The executable Flutter example and canonical native contract live in the SDK
+repository at the documentation reorganization revision
+[`92081b3`](https://github.com/rumpun-app/rumpun-e2ee-sdk/commit/92081b3):
 
+- [Flutter/native quickstart](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/guides/flutter-quickstart.md)
+- [Shared adapter-core contract](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/specifications/shared-adapter-core-contract.md)
+- [Native execution ADR](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/adr/q15-native-execution-architecture.md)
 - `packages/sdk-dart/test/g6_quickstart_test.dart`
 - `scripts/gate-g-g6-quickstart-harness.sh`
-- `.github/workflows/task-5e-flutter.yml`
 
 Always check examples and signatures against the exact SDK revision used by your application.

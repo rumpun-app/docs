@@ -2,7 +2,9 @@
 
 A focused path for integrating the WebAssembly adapter into a browser application.
 
-> **Current status: `NOT_PRODUCTION_SAFE`.** Use synthetic data only. Production authorization remains unavailable until Task 6 and Gate G release acceptance.
+> **Current status: `NOT_PRODUCTION_SAFE`.** Use synthetic data only. The Web
+> adapter remains a development and integration surface until the SDK's
+> production-authority and release criteria are accepted.
 
 ## Complete table of contents
 
@@ -54,10 +56,16 @@ TypeScript does not implement MLS, cryptography, AAD construction, authorization
 
 ## Source of truth
 
+- [Web/WASM quickstart](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/guides/web-quickstart.md)
+- [Browser support matrix](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/guides/browser-support-matrix.md)
+- [Object-layer specification](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/specifications/object-layer-spec.md)
+- [Ambiguity and reconciliation guide](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/guides/ambiguity-reconciliation.md)
 - `packages/sdk-ts/src/index.ts`
 - `packages/sdk-ts/src/contract.ts`
 - `packages/sdk-ts/examples/quickstart.ts`
 - `packages/sdk-ts/tests/`
 - `packages/sdk-ts-integration/tests/`
 
+The linked documents are pinned to SDK revision
+[`92081b3`](https://github.com/rumpun-app/rumpun-e2ee-sdk/commit/92081b3).
 Always verify documentation against the exact SDK revision used by the application.
