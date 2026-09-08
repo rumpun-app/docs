@@ -54,18 +54,14 @@ TypeScript does not implement MLS, cryptography, AAD construction, authorization
 - Dispose before another tab or reload opens the same device identity.
 - Keep plaintext, keys, raw handles, and provider diagnostics out of logs and analytics.
 
-## Source of truth
+## Integration source of truth
 
-- [Web/WASM quickstart](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/guides/web-quickstart.md)
-- [Browser support matrix](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/guides/browser-support-matrix.md)
-- [Object-layer specification](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/specifications/object-layer-spec.md)
-- [Ambiguity and reconciliation guide](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/guides/ambiguity-reconciliation.md)
-- `packages/sdk-ts/src/index.ts`
-- `packages/sdk-ts/src/contract.ts`
-- `packages/sdk-ts/examples/quickstart.ts`
-- `packages/sdk-ts/tests/`
-- `packages/sdk-ts-integration/tests/`
+Use the public TypeScript API and the exact SDK package revision accepted by
+your application release. Verify browser support, generated WASM behavior,
+published type signatures, and integration tests in the checked application
+environment before release.
 
-The linked documents are pinned to SDK revision
-[`92081b3`](https://github.com/rumpun-app/rumpun-e2ee-sdk/commit/92081b3).
-Always verify documentation against the exact SDK revision used by the application.
+This directory deliberately contains no external SDK links. Do not copy
+cryptographic, persistence, or authorization semantics into Web application
+guidance; keep this page focused on application integration and escalate
+semantic questions to the SDK maintainers.

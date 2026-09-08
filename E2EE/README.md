@@ -23,37 +23,31 @@ Rumpun E2EE SDK is the privacy and cryptographic foundation for the proprietary 
 2. Complete that platform's getting-started guide.
 3. Follow lifecycle and membership guides before object encryption.
 4. Use the platform API and error references while implementing.
-5. Run the platform end-to-end suite with the exact pinned SDK revision.
+5. Run the platform end-to-end suite against the SDK revision accepted by the
+   application release.
 
-## Documentation ownership and canonical SDK references
+## Documentation ownership
 
 `docs/E2EE/` is an **application-implementation guide**. It owns instructions
 for integrating published SDK surfaces into a Flutter or Web application: app
 lifecycle ownership, calling patterns, synthetic integration tests, and safe
 application/backend boundaries. It does not define SDK behavior.
 
-[`rumpun-e2ee-sdk/docs/`](https://github.com/rumpun-app/rumpun-e2ee-sdk/tree/88eed5e/docs)
-is the **normative technical source** for cryptographic semantics, formats,
-security invariants, public adapter contracts, platform support, authorization,
-and production readiness. If this guide and the SDK documentation disagree, the
-SDK documentation wins.
+Technical SDK documentation is maintained separately and is the source for
+cryptographic semantics, formats, security invariants, public adapter contracts,
+platform support, authorization, and production readiness. If this guide and
+the accepted SDK contract disagree, the SDK contract wins.
 
-All semantic references below are pinned to the SDK documentation
-reorganization at [`88eed5e`](https://github.com/rumpun-app/rumpun-e2ee-sdk/commit/88eed5e):
+`E2EE/` has a **no-external-SDK-link rule**: it must contain no hyperlink or URL
+to the SDK source or its technical documentation. Keep this guide self-contained
+for application implementation. When the SDK revision changes, revalidate the
+application against its public generated adapter API and update only the
+application-facing calling guidance that changes.
 
-- [SDK documentation index](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/88eed5e/docs/README.md)
-- [Flutter/native quickstart](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/88eed5e/docs/guides/flutter-quickstart.md)
-- [Web/WASM quickstart](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/88eed5e/docs/guides/web-quickstart.md)
-- [MLS mapping](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/88eed5e/docs/specifications/mls-mapping.md)
-- [Object-layer specification](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/88eed5e/docs/specifications/object-layer-spec.md)
-- [`NOT_PRODUCTION_SAFE` removal criteria](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/88eed5e/docs/specifications/not-production-safe-removal-criteria.md)
-
-When upgrading the SDK revision, update every affected pin and revalidate the
-application against the public generated adapter API. Do not duplicate or
-reinterpret SDK security invariants, formats, error semantics, authorization
-rules, or release criteria here; link to the corresponding normative SDK
-document. Historical task records are audit context, never a source of current
-application behavior.
+Do not duplicate or reinterpret SDK security invariants, formats, error
+semantics, authorization rules, or release criteria here. Escalate a semantic
+question to the SDK maintainers; historical task records are audit context,
+never a source of current application behavior.
 
 ## Architecture
 
@@ -88,8 +82,3 @@ Production use additionally requires current authorization and authenticated
 transport, supported production persistence and secure-key providers,
 exact-head release evidence, independent security review, and explicit approval
 to remove `NOT_PRODUCTION_SAFE`.
-
-## Source repositories
-
-- SDK source: <https://github.com/rumpun-app/rumpun-e2ee-sdk>
-- Production authority tracker: <https://github.com/rumpun-app/rumpun-e2ee-sdk/issues/82>

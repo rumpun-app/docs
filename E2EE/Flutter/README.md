@@ -78,16 +78,13 @@ The currently verified development toolchain uses:
 
 Android still requires NDK and device evidence. Apple targets require macOS, Xcode, and physical-device evidence.
 
-## Source of truth
+## Integration source of truth
 
-The executable Flutter example and canonical native contract live in the SDK
-repository at the documentation reorganization revision
-[`92081b3`](https://github.com/rumpun-app/rumpun-e2ee-sdk/commit/92081b3):
+Use the public generated Dart API and the exact SDK package revision accepted by
+your application release. The executable quickstart and native contract are
+maintained with that SDK revision; verify signatures, generated types, and test
+commands in the checked integration environment before release.
 
-- [Flutter/native quickstart](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/guides/flutter-quickstart.md)
-- [Shared adapter-core contract](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/specifications/shared-adapter-core-contract.md)
-- [Native execution ADR](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/adr/q15-native-execution-architecture.md)
-- `packages/sdk-dart/test/g6_quickstart_test.dart`
-- `scripts/gate-g-g6-quickstart-harness.sh`
-
-Always check examples and signatures against the exact SDK revision used by your application.
+This directory deliberately contains no external SDK links. Do not copy native
+contract or cryptographic semantics here; keep this page focused on application
+integration and escalate semantic questions to the SDK maintainers.

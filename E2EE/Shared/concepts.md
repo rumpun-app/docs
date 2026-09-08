@@ -6,16 +6,13 @@ These rules apply equally to the Web/TypeScript and Flutter/native adapters.
 > authorization. Use synthetic data until the production-authority and release
 > criteria are accepted.
 
-## Canonical SDK references
+## Scope of this guide
 
-These concepts summarize, but do not replace, the canonical SDK documents
-pinned to revision [`92081b3`](https://github.com/rumpun-app/rumpun-e2ee-sdk/commit/92081b3):
-
-- [MLS mapping](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/specifications/mls-mapping.md)
-- [Object-layer specification](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/specifications/object-layer-spec.md)
-- [Threat model](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/specifications/threat-model.md)
-- [Operations, cancellation, and publication outcomes](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/guides/operations-cancellation-outcome.md)
-- [Ambiguity and explicit reconciliation](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/guides/ambiguity-reconciliation.md)
+This page records application-facing consequences of the public SDK surface; it
+does not restate the technical specification. `E2EE/` deliberately contains no
+external SDK links. Keep integration guidance self-contained, and escalate any
+question about cryptographic, persistence, authorization, or release semantics
+to the SDK maintainers rather than copying a technical rule into this guide.
 
 ## One Rust core, thin adapters
 
