@@ -25,11 +25,21 @@ Rumpun E2EE SDK is the privacy and cryptographic foundation for the proprietary 
 4. Use the platform API and error references while implementing.
 5. Run the platform end-to-end suite with the exact pinned SDK revision.
 
-## Canonical SDK documentation
+## Documentation ownership and canonical SDK references
 
-This site is an application-integration guide. The SDK repository owns the
-normative security and adapter contracts. The links below are pinned to the SDK
-documentation reorganization at [`92081b3`](https://github.com/rumpun-app/rumpun-e2ee-sdk/commit/92081b3):
+`docs/E2EE/` is an **application-implementation guide**. It owns instructions
+for integrating published SDK surfaces into a Flutter or Web application: app
+lifecycle ownership, calling patterns, synthetic integration tests, and safe
+application/backend boundaries. It does not define SDK behavior.
+
+[`rumpun-e2ee-sdk/docs/`](https://github.com/rumpun-app/rumpun-e2ee-sdk/tree/92081b3/docs)
+is the **normative technical source** for cryptographic semantics, formats,
+security invariants, public adapter contracts, platform support, authorization,
+and production readiness. If this guide and the SDK documentation disagree, the
+SDK documentation wins.
+
+All semantic references below are pinned to the SDK documentation
+reorganization at [`92081b3`](https://github.com/rumpun-app/rumpun-e2ee-sdk/commit/92081b3):
 
 - [SDK documentation index](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/README.md)
 - [Flutter/native quickstart](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/guides/flutter-quickstart.md)
@@ -38,9 +48,12 @@ documentation reorganization at [`92081b3`](https://github.com/rumpun-app/rumpun
 - [Object-layer specification](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/specifications/object-layer-spec.md)
 - [`NOT_PRODUCTION_SAFE` removal criteria](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/specifications/not-production-safe-removal-criteria.md)
 
-When upgrading the SDK revision, update this reference set and revalidate the
-application against the public generated adapter API. Do not infer API or
-security semantics from a historical task record.
+When upgrading the SDK revision, update every affected pin and revalidate the
+application against the public generated adapter API. Do not duplicate or
+reinterpret SDK security invariants, formats, error semantics, authorization
+rules, or release criteria here; link to the corresponding normative SDK
+document. Historical task records are audit context, never a source of current
+application behavior.
 
 ## Architecture
 
