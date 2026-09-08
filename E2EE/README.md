@@ -32,21 +32,21 @@ for integrating published SDK surfaces into a Flutter or Web application: app
 lifecycle ownership, calling patterns, synthetic integration tests, and safe
 application/backend boundaries. It does not define SDK behavior.
 
-[`rumpun-e2ee-sdk/docs/`](https://github.com/rumpun-app/rumpun-e2ee-sdk/tree/92081b3/docs)
+[`rumpun-e2ee-sdk/docs/`](https://github.com/rumpun-app/rumpun-e2ee-sdk/tree/88eed5e/docs)
 is the **normative technical source** for cryptographic semantics, formats,
 security invariants, public adapter contracts, platform support, authorization,
 and production readiness. If this guide and the SDK documentation disagree, the
 SDK documentation wins.
 
 All semantic references below are pinned to the SDK documentation
-reorganization at [`92081b3`](https://github.com/rumpun-app/rumpun-e2ee-sdk/commit/92081b3):
+reorganization at [`88eed5e`](https://github.com/rumpun-app/rumpun-e2ee-sdk/commit/88eed5e):
 
-- [SDK documentation index](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/README.md)
-- [Flutter/native quickstart](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/guides/flutter-quickstart.md)
-- [Web/WASM quickstart](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/guides/web-quickstart.md)
-- [MLS mapping](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/specifications/mls-mapping.md)
-- [Object-layer specification](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/specifications/object-layer-spec.md)
-- [`NOT_PRODUCTION_SAFE` removal criteria](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/92081b3/docs/specifications/not-production-safe-removal-criteria.md)
+- [SDK documentation index](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/88eed5e/docs/README.md)
+- [Flutter/native quickstart](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/88eed5e/docs/guides/flutter-quickstart.md)
+- [Web/WASM quickstart](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/88eed5e/docs/guides/web-quickstart.md)
+- [MLS mapping](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/88eed5e/docs/specifications/mls-mapping.md)
+- [Object-layer specification](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/88eed5e/docs/specifications/object-layer-spec.md)
+- [`NOT_PRODUCTION_SAFE` removal criteria](https://github.com/rumpun-app/rumpun-e2ee-sdk/blob/88eed5e/docs/specifications/not-production-safe-removal-criteria.md)
 
 When upgrading the SDK revision, update every affected pin and revalidate the
 application against the public generated adapter API. Do not duplicate or
