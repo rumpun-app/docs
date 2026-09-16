@@ -42,3 +42,15 @@ site:
           draft: true
           content:
             directory: ./changelog/changelog
+    - type: section
+      key: section-4
+      title: E2EE SDK
+      path: e2ee
+      children:
+        - type: space
+          key: space-4
+          title: E2EE SDK
+          path: e2ee
+          default: true
+          content:
+            directory: ./E2EE
