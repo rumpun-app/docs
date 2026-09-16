@@ -2,6 +2,8 @@
 
 This page catalogs the callable Flutter/Dart surface exported by `package:rumpun_sdk_dart/rumpun_sdk_dart.dart`, plus the generated object-crypto calls currently imported from `src/rust/api/api_operations.dart`.
 
+How to read it: each entry shows the exact Dart signature first, then what the call does and the rules for using it. Signatures are authoritative, so match them exactly. The object-crypto calls live behind explicit `src/` imports (see [Imports](#imports)), which are a temporary generated boundary; keep application code on the public package root wherever a public wrapper exists.
+
 > **Status: `NOT_PRODUCTION_SAFE`.** Use synthetic data only. Protected object operations remain fail-closed in ordinary release builds until Task 6 authorization and Gate G release acceptance.
 
 ## Contents
@@ -231,7 +233,7 @@ Future<UnitOperation> lifecycleCatchUpSequentially({
 })
 ```
 
-Processes a caller-supplied sequence in order. Do not sort, skip, or parallelize the list.
+Processes a caller-supplied sequence in order. Do not sort, skip, or parallelize the list. For you, this is how a member that missed several Commits catches up to the current epoch in one call.
 
 ### `lifecycleInspectGroup()`
 
@@ -268,7 +270,7 @@ Future<FfiHandleOperation> lifecycleReconcile({
 })
 ```
 
-Explicitly resolves durable ambiguity and returns a usable handle operation when reconciliation succeeds. This is the only valid path after `PublicationOutcome.ambiguous`; never automatically replay the original mutation.
+Explicitly resolves durable ambiguity and returns a usable handle operation when reconciliation succeeds. This is the only valid path after `PublicationOutcome.ambiguous`; never automatically replay the original mutation. For you, this is the only safe way to turn an `ambiguous` result into a known `committed` or `notCommitted` answer.
 
 ## Object encryption
 
@@ -316,7 +318,7 @@ Future<RewrapObjectCekResultV1> rewrapObjectCekV1({
 })
 ```
 
-Adds a new CEK wrap while retaining content context, content nonce, and content ciphertext byte-for-byte. Keep the old wrap when historical access is required.
+Adds a new CEK wrap while retaining content context, content nonce, and content ciphertext byte-for-byte. Keep the old wrap when historical access is required. For you, this makes existing encrypted objects readable under evolved group keys without re-encrypting the content.
 
 ## Operation control
 
