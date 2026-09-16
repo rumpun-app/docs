@@ -2,6 +2,8 @@
 
 A focused path for integrating the WebAssembly adapter into a browser application.
 
+**In plain terms:** your browser app talks to a thin TypeScript wrapper, the wrapper calls a WebAssembly (WASM) build of the Rust core, and that Rust core does all the real cryptography. The TypeScript layer stays deliberately thin so that no security decision is ever made twice: every key, encryption step, and authorization check lives in the one audited Rust core, and TypeScript only carries typed values back and forth.
+
 > **Current status: `NOT_PRODUCTION_SAFE`.** Use synthetic data only. Production authorization remains unavailable until Task 6 and Gate G release acceptance.
 
 ## Complete table of contents
@@ -31,6 +33,8 @@ A focused path for integrating the WebAssembly adapter into a browser applicatio
 
 ## Runtime model
 
+This is the chain a request travels through, from your app down to storage. Each arrow is one thin hop, and the authoritative decisions happen only in the Rust lifecycle near the bottom.
+
 ```text
 Browser application
   -> thin TypeScript wrapper
@@ -40,9 +44,11 @@ Browser application
   -> exclusive Web Lock per device identity
 ```
 
-TypeScript does not implement MLS, cryptography, AAD construction, authorization, sealing, or state serialization.
+TypeScript does not implement MLS, cryptography, AAD construction, authorization, sealing, or state serialization. (MLS is the group-messaging security protocol that decides who is currently in a family group and derives the group's shared keys.)
 
 ## Golden rules
+
+These are the non-negotiable habits that keep your integration safe. Follow every one exactly; each maps to a rule enforced by the Rust core.
 
 - Await every mutation's `result` and `outcome`.
 - Never serialize, decode, log, or reconstruct lifecycle, device, or group handles.
@@ -53,6 +59,8 @@ TypeScript does not implement MLS, cryptography, AAD construction, authorization
 - Keep plaintext, keys, raw handles, and provider diagnostics out of logs and analytics.
 
 ## Source of truth
+
+When the docs and the code disagree, the code wins. These are the files to check against the exact SDK revision your application pins.
 
 - `packages/sdk-ts/src/index.ts`
 - `packages/sdk-ts/src/contract.ts`

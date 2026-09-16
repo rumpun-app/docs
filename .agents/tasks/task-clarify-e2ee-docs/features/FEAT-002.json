@@ -1,0 +1,34 @@
+{
+  "id": "FEAT-002",
+  "type": "docs",
+  "description": "Improve clarity and onboarding flow of the 8 Web/TypeScript E2EE docs: E2EE/Web/README.md, getting-started.md, lifecycle-and-groups.md, members-and-devices.md, object-encryption.md, types-outcomes-errors.md, api-reference.md, end-to-end-testing.md. Make the terse, spec-like prose approachable for a developer meeting the WASM/TypeScript adapter for the first time, without removing technical precision. Add plain-language explanations of jargon (retaining exact terms), 'what this means for you' framing, worked-example context around existing code samples, clearer section intros, and consistent tone with the glossary established in FEAT-001. Depends on FEAT-001 (reuse the same concept glosses). Independent of FEAT-003 (Flutter) and could be parallelized with it, but both must keep terminology consistent with FEAT-001.",
+  "status": "completed",
+  "steps": [
+    "Read all 8 files under E2EE/Web/ before editing. Also re-read E2EE/Shared/concepts.md and the FEAT-001 glossary in E2EE/README.md so wording stays consistent.",
+    "Web/README.md: add a 1-2 sentence plain intro of the runtime model (browser app -> thin TS wrapper -> WASM -> Rust) explaining WHY TypeScript stays thin. Add short lead-ins to the 'Runtime model', 'Golden rules', and 'Source of truth' sections. Keep the NOT_PRODUCTION_SAFE callout, the full table of contents with working relative links, and every golden rule intact.",
+    "Web/getting-started.md: frame each step ('Open a lifecycle', 'Enroll', 'Dispose', 'Restore after reload') with a one-sentence explanation of what the developer is doing and why, before the code block. Explain terms like Web Lock, ReplayReservationConflict, and 'consume both result and outcome' in plain language on first use. Keep the Status callout, all bash/ts code samples, API names, and the 'Next' link unchanged.",
+    "Web/lifecycle-and-groups.md: add brief plain-language framing for lifecycle ownership, key packages / Welcome / Commit (explain the MLS join handshake in one or two sentences), cancellation, and the shutdown/Web Lock rule. Preserve all code samples and the note that a group ID is authenticated identity not authorization.",
+    "Web/members-and-devices.md: add intro framing for roster inspection, add vs remove, ordered Commit delivery, and Ambiguous removal. Explain leafIndex being epoch-sensitive in plain terms and WHY it must be refreshed. Keep all code, the reconcile guidance, and the 'do not sort/skip/deduplicate/parallelize' rule intact.",
+    "Web/object-encryption.md: add plain-language framing for content identity, encrypt, decrypt, same-scope re-key (explain what re-key/re-wrap means and why it is additive), storing the bundle, bounds, and error handling. Keep the Status callout, all field lists, the exact numeric bounds, every code sample, and the prohibition on storing plaintext/CEK/KWK/etc. unchanged.",
+    "Web/types-outcomes-errors.md: this is reference material; keep tables and code exact. Add a short plain-language intro to the page and one-sentence lead-ins to the main sections (opaque values, mutations/outcomes, DTOs, errors, contract constants/helpers) so a first-time reader knows how to use the tables. Do NOT change any type name, field, error code, wire constant value, or table cell meaning.",
+    "Web/api-reference.md: keep every signature, code block, and behavioral note exact. Add a brief page intro on how to read the reference and, where a method's purpose is non-obvious, a short plain-language 'what it does for you' sentence alongside (not replacing) the existing description. Preserve the low-level/raw API warnings verbatim in intent.",
+    "Web/end-to-end-testing.md: add plain-language framing for why real-browser E2E matters (vs unit mocks), and short intros to the suite steps, cross-tab ownership, persistence/rollback, object crypto matrix, and security assertions. Keep every bash command, the numbered application journey, and evidence rules intact.",
+    "Across all Web files: verify NOT_PRODUCTION_SAFE callouts that were present remain present; keep TypeScript identifier casing (e.g. PublicationOutcome values 'Committed'/'NotCommitted'/'Ambiguous' as string literals) exactly; do not introduce Dart-style identifiers.",
+    "Verify all relative Markdown links (to sibling Web files and to ../Shared/concepts.md) still resolve; keep all in-page anchor links working."
+  ],
+  "acceptance_criteria": [
+    "Each of the 8 Web files has clearer onboarding/section intros and plain-language explanations of jargon while retaining exact terms.",
+    "All code samples, API signatures, type names, error codes, numeric bounds, and wire constants are unchanged in meaning across the 8 files.",
+    "NOT_PRODUCTION_SAFE callouts present before remain present; TypeScript identifier casing is preserved (no Dart enum casing introduced).",
+    "All relative links between Web files and to ../Shared/concepts.md resolve; in-page anchors still match their headings.",
+    "Terminology for core concepts matches the FEAT-001 glossary."
+  ],
+  "verification": [
+    "Run: cd /projects/sandbox/docs && grep -rn 'NOT_PRODUCTION_SAFE' E2EE/Web/  (confirm callouts still present in files that had them: README, getting-started, object-encryption, api-reference).",
+    "Run: cd /projects/sandbox/docs && for f in E2EE/Web/*.md; do awk -v F=$f '/```/{c++} END{print F, c%2}' $f; done  (confirm every file reports 0 = balanced fences).",
+    "Run: cd /projects/sandbox/docs && grep -rn 'PublicationOutcome.committed\\|PublicationOutcome.ambiguous\\|PublicationOutcome.notCommitted' E2EE/Web/  (must return NOTHING; Web uses string-literal outcomes, not Dart enum casing).",
+    "Run: cd /projects/sandbox/docs && git diff --stat E2EE/Web/  and manually review that no signature or numeric bound changed meaning."
+  ],
+  "blocked_reason": null,
+  "findings": "Added plain-language intros and 'what this means for you' framing across all 8 E2EE/Web files, reusing FEAT-001 glosses (MLS, opaque capability/handle, publication outcome, CEK/object encryption, NOT_PRODUCTION_SAFE). Reference files (types-outcomes-errors.md, api-reference.md) only gained navigational intros and non-obvious 'what it does for you' sentences; all signatures, tables, bounds, error codes, and wire constants unchanged in meaning. Fixed a pre-existing duplicate H1 in members-and-devices.md while adding its intro. Verification: NOT_PRODUCTION_SAFE callouts still present in README/getting-started/object-encryption/api-reference; all code fences balanced (0); no Dart-style PublicationOutcome casing introduced (TypeScript string literals preserved); all relative links (siblings + ../Shared/concepts.md) resolve; in-page anchors unchanged. No build/test toolchain (docs-only)."
+}

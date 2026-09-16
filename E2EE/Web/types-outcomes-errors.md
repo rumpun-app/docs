@@ -2,6 +2,8 @@
 
 This page catalogs every public type, error, constant, and contract helper exported by `@rumpun/sdk-ts`.
 
+Use it as a lookup, not a tutorial: find the type or error you are holding, read its `Meaning` cell for what it represents, and follow the `Rule` or `Required response` cell for how to treat it. The values here mirror the Rust contract exactly, so treat every name, number, and outcome literal as authoritative.
+
 ## Contents
 
 - [Lifecycle and opaque values](#lifecycle-and-opaque-values)
@@ -14,6 +16,8 @@ This page catalogs every public type, error, constant, and contract helper expor
 
 ## Lifecycle and opaque values
 
+These are the opaque capabilities (handles) the SDK hands you to act on a device, group, or MLS material without ever seeing the bytes inside. Use them, do not inspect or persist them.
+
 | Type | Meaning | Rule |
 |---|---|---|
 | `RumpunLifecycle` | One device's lifecycle, durable store, and exclusive Web Lock owner | Open through `RumpunLifecycle.open()` and always `dispose()`. |
@@ -25,6 +29,8 @@ This page catalogs every public type, error, constant, and contract helper expor
 Branding prevents accidental interchange at TypeScript compile time. Rust remains the semantic validator.
 
 ## Mutations and publication outcomes
+
+Every protected change returns a `RumpunMutation`, which pairs the produced `result` with a separate `outcome`, the terminal answer to "was this actually saved?". The outcome table below is the one you will reach for most; each row tells you exactly how to respond.
 
 ### `RumpunMutation<T>`
 
@@ -57,6 +63,8 @@ type PublicationOutcome =
 Wire constants are `OUTCOME_NOT_COMMITTED = 0`, `OUTCOME_COMMITTED = 1`, `OUTCOME_AMBIGUOUS = 2`, and `OUTCOME_COUNT = 3`.
 
 ## Group and membership DTOs
+
+These are the plain data-transfer objects (DTOs) the SDK returns when you inspect a group or its roster, or add a member. They are non-secret snapshots, not capabilities.
 
 ### `GroupStatusDto`
 
@@ -94,6 +102,8 @@ Returned by `addMember()`. Current members receive the ordered Commit; only the 
 
 ## Object encryption DTOs
 
+These describe the authenticated content identity you supply and the encrypted bundle you get back. Everything here is safe to persist and transport; none of it contains keys or plaintext.
+
 ### `ObjectContentContextV1`
 
 ```ts
@@ -126,6 +136,8 @@ Persist every field together. It contains encrypted transport and authenticated 
 `wrapContext` is intentionally opaque on the current TypeScript surface. Applications may transport the value returned by Rust but must not infer authority or fabricate destination key versions.
 
 ## Errors
+
+Every SDK failure surfaces as a `RumpunSdkError` you catch by class and branch on by `code`. The catalog below lists each stable code and the caller response it expects; only the two codes noted at the end are ever retryable, and even then never while an outcome is `Ambiguous`.
 
 ```ts
 class RumpunSdkError extends Error {
@@ -182,6 +194,8 @@ try {
 
 ## Contract constants
 
+These frozen values pin the shared contract between TypeScript, the WASM adapter, and Rust. They exist so mismatched builds fail fast; they are metadata to compare against, not knobs to change or permission to decode anything.
+
 | Export | Current value | Meaning |
 |---|---:|---|
 | `CONTRACT_API_VERSION` | `1` | Shared semantic API version. |
@@ -203,6 +217,8 @@ try {
 The frozen registry contains `Device`, `ScopeGroup`, `EpochKwkJournal`, `ObjectKeyReference`, `MediaSession`, `VerifiedManifest`, `ReplayStore`, `PlatformSigner`, `SecureKey`, `PersistedState`, and `LifecycleRoot`. These names are contract metadata, not constructors or authorization grants.
 
 ## Contract helper functions
+
+These helpers let you read and verify the contract declaration at build or test time. They confirm that your TypeScript, WASM, and Rust agree; they never grant runtime authority or bypass any outcome.
 
 ### `callVersionForWasm()`
 
