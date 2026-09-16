@@ -6,6 +6,8 @@ Use this guide to test the complete native path from generated Dart bindings to 
 
 ## What counts as end-to-end
 
+End-to-end here means the test drives the whole real stack, from your Dart call, across `flutter_rust_bridge`, through the native actor and the Rust lifecycle, down to sealed files on disk, and back out as a typed result and publication outcome. That full composed path matters because the guarantees you care about (real cryptography, durable persistence, clean cancellation, and correct outcomes) only exist when every layer runs for real. A mock can stub a layer away and quietly pass while the real integration is broken, which is exactly the failure you are trying to catch.
+
 A valid test traverses the real composed path:
 
 ```text
@@ -23,6 +25,8 @@ Flutter test
 Direct Rust-core tests, mocked operation results, manually planted outcomes, or a Dart-only crypto implementation are not end-to-end evidence.
 
 ## 1. Verify prerequisites
+
+First confirm your machine matches the verified toolchain, so a failure is a real defect and not a version mismatch.
 
 From the E2EE SDK repository:
 
@@ -43,6 +47,8 @@ Linux x86_64
 ```
 
 ## 2. Run the public release-path quickstart
+
+The fastest way to confirm the whole path works is the bundled harness, which builds the release bridge and runs one composed test through the public generated API for you.
 
 The repository includes a harness that builds the release bridge, creates a fresh state directory, initializes FRB, and runs the public generated API:
 
@@ -74,6 +80,8 @@ It covers lifecycle creation, enrollment, operation identity, result/outcome con
 
 ## 3. Run one test manually
 
+When you need more control than the harness gives, run the same test yourself: build the bridge, point the environment at an isolated state directory, and invoke the test directly.
+
 Build the bridge and create isolated state:
 
 ```bash
@@ -103,6 +111,8 @@ rm -rf "$WORK"
 Never point tests at an application's real state directory.
 
 ## 4. Write a composed Flutter test
+
+To write your own end-to-end test, follow this skeleton: it loads the exact native library the runner supplies, skips cleanly when that environment is absent, and always tears the lifecycle down. Skipping when the environment is missing is what stops a test from silently running only part of the path.
 
 Use the generated bridge and public operations. Initialize the exact cdylib supplied by the runner:
 
@@ -148,6 +158,8 @@ A plain `flutter test` without the integration environment must skip explicitly.
 
 ## 5. Test encrypt and decrypt
 
+Object encryption is gated in ordinary builds, so to exercise it you build the compile-time-isolated integration bridge, point the environment at it, and run the composed object test that provisions a group, encrypts, re-keys, decrypts, and restores.
+
 Protected object operations need the compile-time-isolated integration bridge until Task 6 provides production authority. Generate and build that bridge first:
 
 ```bash
@@ -190,6 +202,8 @@ The test must prove:
 
 ## 6. Test negative and attack paths
 
+Proving the SDK accepts valid input is only half the job; you also prove it rejects bad input safely. This step runs the attack matrix to confirm malformed, tampered, and stale inputs fail closed and release no plaintext.
+
 Run generated-adapter attack coverage:
 
 ```bash
@@ -211,6 +225,8 @@ Never loosen a test to accept two unrelated error codes. Fix the nondeterminism 
 
 ## 7. Test cancellation and isolate teardown
 
+These tests prove that cancelling or abruptly exiting an isolate leaves no leaked workers and that opaque handles cannot be smuggled across isolates. Use a fresh state directory per scenario so one test cannot contaminate another.
+
 Run the focused isolate tests with a fresh state directory per scenario:
 
 ```bash
@@ -231,6 +247,8 @@ Use Rust-owned terminal acknowledgements. Sleeps and timer polling are not deter
 
 ## 8. Test restore correctly
 
+Restore is easy to test wrong, so this step spells out the honest sequence: finish the original mutation, shut down, reopen over the same sealed state, and prove old handles fail while fresh ones work.
+
 For a restart scenario:
 
 1. Complete and verify the original mutation outcome.
@@ -244,6 +262,8 @@ For a restart scenario:
 Restore is not reconciliation. Do not use ordinary restore as evidence that an ambiguous mutation was reconciled.
 
 ## 9. Assert both result and outcome
+
+Every mutation test must check two things, not one: the produced result and the separate publication outcome. A successful result alone is never proof that the change was published, so assert both.
 
 For every mutation:
 
@@ -271,6 +291,8 @@ A generic successful result is never publication proof. Consume each future once
 
 ## 10. Check durable-state invariance
 
+To prove a rejected call wrote nothing, snapshot the sealed files before it and compare bytes afterward. Byte equality is the observation you can make from the application side without ever decoding the sealed records.
+
 Capture only the opaque sealed files in the test-owned state directory before a rejected call, then compare them afterward:
 
 ```dart
@@ -291,6 +313,8 @@ Map<String, List<int>> durableSnapshot(String root) {
 Do not decode sealed records in Dart. Byte equality is the application-visible no-write observation.
 
 ## 11. Run the CI-equivalent Flutter suite
+
+Finally, run what CI runs so your local pass matches the pipeline's verdict before you push.
 
 Before opening or updating a PR, run:
 

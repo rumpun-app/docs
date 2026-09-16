@@ -1,5 +1,7 @@
 # Test the Web SDK end-to-end
 
+Real-browser end-to-end tests matter because the guarantees you care about here, exclusive device ownership, durable persistence, clean cancellation, and cross-tab behavior, only exist in a real browser with real WASM and real storage. Unit mocks can stub those away and quietly pass while the real integration is broken, which is exactly the failure you are trying to catch.
+
 Use a real browser, generated WASM, real IndexedDB, WebCrypto, and Web Locks. Unit mocks cannot prove lifecycle ownership, persistence, cancellation, or cross-tab behavior.
 
 ## Run the verified suite
@@ -22,6 +24,8 @@ npx playwright test
 
 ## Minimum application journey
 
+This is the end-to-end path a meaningful test should walk, from opening a device through membership changes to teardown. Each numbered step exercises a guarantee that mocks cannot.
+
 A useful E2E test must:
 
 1. Open a lifecycle with a unique synthetic device ID.
@@ -37,13 +41,15 @@ A useful E2E test must:
 
 ## Cross-tab ownership
 
-Open one lifecycle, then attempt the same device ID in a second page. The second page must fail with `ReplayReservationConflict`; it must not queue. After disposal, a fresh page must be able to open and restore.
+This proves only one tab can own a device at a time, and that ownership is released cleanly on disposal. Open one lifecycle, then attempt the same device ID in a second page. The second page must fail with `ReplayReservationConflict`; it must not queue. After disposal, a fresh page must be able to open and restore.
 
 ## Persistence and rollback
 
-Test a real reload against IndexedDB. Corrupt or roll back one durable component and assert fail-closed behavior (`PersistenceCorruption` or `RollbackDetected`) without silent reset.
+This confirms state survives a genuine reload and that tampering or rolling back durable data fails closed instead of silently resetting. Test a real reload against IndexedDB. Corrupt or roll back one durable component and assert fail-closed behavior (`PersistenceCorruption` or `RollbackDetected`) without silent reset.
 
 ## Object crypto matrix
+
+This is the grid of encrypt/decrypt cases to cover, including cross-platform exchange and deliberate tampering, so you prove both correct decryption and correct rejection. Release artifacts should never fake success here.
 
 Development integration builds should cover:
 
@@ -60,7 +66,7 @@ Ordinary release artifacts should assert `UnsupportedProtocol`, not fake success
 
 ## Security assertions
 
-Scan built artifacts and logs for plaintext fixtures, raw keys, CEKs, KWKs, exporter output, authority booleans, test-only imports, and integration-only authenticated mapping fixtures.
+These checks make sure nothing secret leaked into what you shipped or logged. Scan built artifacts and logs for plaintext fixtures, raw keys, CEKs, KWKs, exporter output, authority booleans, test-only imports, and integration-only authenticated mapping fixtures.
 
 ## Evidence rules
 

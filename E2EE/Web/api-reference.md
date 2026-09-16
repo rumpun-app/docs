@@ -2,6 +2,8 @@
 
 This page catalogs every callable export from `@rumpun/sdk-ts` on the current `develop` surface.
 
+How to read it: each entry shows the exact TypeScript signature first, then what the method does and the rules for calling it. Signatures are authoritative, so match them exactly. The `Low-level verification APIs` section at the end is for contract tests only and must not be used by application code.
+
 > **Status: `NOT_PRODUCTION_SAFE`.** Protected object operations remain fail-closed until Task 6 authorization and Gate G release acceptance. Never bypass this with application-side crypto.
 
 ## Contents
@@ -26,7 +28,7 @@ For all types, outcomes, errors, constants, and contract helpers, see [Types, ou
 static open(deviceId: Uint8Array): Promise<RumpunLifecycle>
 ```
 
-Initializes WASM once, acquires the exclusive Web Lock for `deviceId`, opens its durable store, and creates the native lifecycle. A competing owner fails with `ReplayReservationConflict`; the call never silently queues.
+Initializes WASM once, acquires the exclusive Web Lock for `deviceId`, opens its durable store, and creates the native lifecycle. A competing owner fails with `ReplayReservationConflict`; the call never silently queues. For you, this is the single entry point that gives your app a working, exclusively-owned device to build on.
 
 ```ts
 const lifecycle = await RumpunLifecycle.open(deviceId);
@@ -188,7 +190,7 @@ catchUpSequentially(
 ): RumpunMutation<void>
 ```
 
-Processes the caller-supplied sequence in order. Do not sort, skip, deduplicate, or parallelize it.
+Processes the caller-supplied sequence in order. Do not sort, skip, deduplicate, or parallelize it. For you, this is how a member that missed several Commits catches up to the current epoch in one call.
 
 ### `lifecycle.inspectGroup()`
 
@@ -216,7 +218,7 @@ Returns the current non-secret roster: account ID, epoch-sensitive leaf index, a
 reconcile(operationId: string): Promise<PublicationOutcome>
 ```
 
-Reconciles one exact ambiguous operation. Call only when that operation's outcome is `Ambiguous`. Do not substitute restore, invent an ID, clear local state, or replay the original mutation.
+Reconciles one exact ambiguous operation. Call only when that operation's outcome is `Ambiguous`. Do not substitute restore, invent an ID, clear local state, or replay the original mutation. For you, this is the only safe way to turn an `Ambiguous` result into a known `Committed` or `NotCommitted` answer.
 
 ```ts
 const outcome = await operation.outcome;
@@ -266,7 +268,7 @@ rewrapObjectCekV1(
 ): Promise<EncryptedObjectBundleV1>
 ```
 
-Adds a destination CEK wrap while preserving content context, content nonce, and content ciphertext. Destination key-version authority must come from the approved lifecycle flow, never UI code.
+Adds a destination CEK wrap while preserving content context, content nonce, and content ciphertext. Destination key-version authority must come from the approved lifecycle flow, never UI code. For you, this makes existing encrypted objects readable under evolved group keys without re-encrypting the content.
 
 ## Mutation control
 

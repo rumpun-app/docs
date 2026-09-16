@@ -2,7 +2,7 @@
 
 ## Lifecycle ownership
 
-One `RumpunLifecycle` owns one device's Rust lifecycle, IndexedDB state, and exclusive Web Lock. Keep it in an application service, not a React component or short-lived request handler.
+Think of the lifecycle as the single long-lived owner of everything tied to one device. One `RumpunLifecycle` owns one device's Rust lifecycle, IndexedDB state, and exclusive Web Lock. Keep it in an application service, not a React component or short-lived request handler, so its ownership survives re-renders and does not get created or torn down repeatedly.
 
 ## Create a group
 
@@ -39,6 +39,8 @@ These are non-secret reads. They do not grant authorization.
 
 ## Create a key package and join
 
+Joining an MLS group is a short handshake. The joining device first publishes a key package (a signed bundle that advertises how to add it), a current member uses that key package to add it and receives back a Commit plus a Welcome, and the joining device then consumes the Welcome to enter the group at the new epoch. Deliver the Commit to existing members and the Welcome only to the newcomer.
+
 Joining device:
 
 ```ts
@@ -63,6 +65,8 @@ Deliver key packages, Commits, and Welcomes unchanged over authenticated transpo
 
 ## Cancellation
 
+Cancelling asks the SDK to stop an in-flight mutation, but asking is not the same as knowing it did not happen. You must still read the terminal outcome to learn where state actually landed.
+
 ```ts
 const operation = lifecycle.selfUpdate(group);
 operation.cancel();
@@ -74,4 +78,4 @@ Cancellation is a request, not proof of non-commit. Reconcile if the terminal ou
 
 ## Shutdown rule
 
-Always call `dispose()` in `finally`. A second tab cannot own the same device until the first lifecycle releases its Web Lock.
+Clean shutdown is what frees the device for the next tab or reload. Always call `dispose()` in `finally`. A second tab cannot own the same device until the first lifecycle releases its Web Lock.

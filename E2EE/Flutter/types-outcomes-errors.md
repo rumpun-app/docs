@@ -2,6 +2,8 @@
 
 This page covers every type intentionally exposed by the Flutter package root and the generated DTOs required by object encryption.
 
+Use it as a lookup, not a tutorial: find the type or error you are holding, read its `Meaning` cell for what it represents, and follow the `Rule` or caller-action cell for how to treat it. The values here mirror the Rust contract exactly, so treat every name, number, and outcome enum as authoritative.
+
 ## Contents
 
 - [Opaque capabilities](#opaque-capabilities)
@@ -14,6 +16,8 @@ This page covers every type intentionally exposed by the Flutter package root an
 
 ## Opaque capabilities
 
+These are the opaque capabilities (handles) the SDK hands you to act on a device, group, or lifecycle without ever seeing the bytes inside. Use them, do not inspect or persist them.
+
 | Type | Meaning | Rule |
 |---|---|---|
 | `FfiLifecycle` | Native actor capability | Keep process-local; shut down explicitly. |
@@ -25,6 +29,8 @@ This page covers every type intentionally exposed by the Flutter package root an
 `handleWireLen` is `35`. Its existence does not authorize applications to decode or construct handles.
 
 ## Operation types
+
+Each protected call returns one of these operation types. The table maps each type to the value its `awaitResult()` produces and the calls that produce it, so you know what to expect back before you await.
 
 | Type | `awaitResult()` value | Typical producers |
 |---|---|---|
@@ -48,6 +54,8 @@ Correlates one admitted operation with its terminal publication outcome. It is d
 
 ## Publication outcomes
 
+The publication outcome is the terminal answer to "was this change actually saved?" The table below is the one you will reach for most; each row tells you exactly how to respond, and `ambiguous` in particular must be reconciled rather than retried.
+
 | Outcome | Meaning | Caller action |
 |---|---|---|
 | `PublicationOutcome.notCommitted` | Non-commit is proven and durable state remains reusable. | A user-directed retry may be offered if the original error semantics allow it. |
@@ -57,6 +65,8 @@ Correlates one admitted operation with its terminal publication outcome. It is d
 The package also exposes a provisional discriminant helper with `fromDiscriminant(int)`: `0`, `1`, and `2` map to the outcomes above; unknown values fail closed as ABI mismatch.
 
 ## Group and roster DTOs
+
+These are the plain data-transfer objects (DTOs) the SDK returns when you inspect a group or its roster, or add a member. They are non-secret snapshots, not capabilities.
 
 ### `FfiGroupStatus`
 
@@ -95,6 +105,8 @@ Returned by member addition. Send `commit` to current members in order and `welc
 The package also exports provisional equivalents `GroupStatus`, `MemberDevice`, and `CommitAndWelcome`. Prefer the generated `Ffi*` forms returned by callable APIs; do not convert them into authorization decisions.
 
 ## Object crypto DTOs
+
+These describe the authenticated content identity you supply and the encrypted bundle you get back. Everything here is safe to persist and transport; none of it contains keys or plaintext.
 
 ### `ObjectContentContextV1`
 
@@ -151,6 +163,8 @@ Return value of `encryptObjectVersionV1()`.
 Contains retained content context, nonce, and ciphertext plus the added destination wrap context, wrapped-CEK nonce, and wrapped-CEK ciphertext. Re-keying is additive and must not alter retained content fields.
 
 ## Errors
+
+Every SDK failure surfaces as an `FfiError` you catch by class and branch on by `code`. The catalog below lists each stable code and the caller response it expects; only the two codes noted after the table are ever retryable, and even then never while an outcome is `ambiguous`.
 
 Callable generated APIs throw:
 
@@ -212,6 +226,8 @@ try {
 ```
 
 ## Versions and wire helpers
+
+These pin the shared contract between Dart, the generated bridge, and Rust, and encode it for the wire. They exist so mismatched builds fail fast; treat them as metadata to declare and compare, not values to handcraft.
 
 ### `CallVersion`
 

@@ -2,6 +2,8 @@
 
 > **Status: `NOT_PRODUCTION_SAFE`.** The API shape is final for development evidence, but ordinary release builds return `unsupportedProtocol` until Task 6 enables production authorization. Never add fallback crypto in Dart.
 
+This guide is where a single piece of family content gets protected. The pattern is: describe what the content is (its identity), hand the plaintext to the SDK to encrypt, decrypt it back later by supplying that same expected identity, and re-key the wrapping when the group's keys evolve. The Rust core does every cryptographic step; your Dart code only supplies typed values and stores the public bundle it gets back.
+
 ## Before you start
 
 You need:
@@ -21,6 +23,8 @@ import 'package:rumpun_sdk_dart/src/rust/api/api_operations.dart'
 
 ## Encode object versions safely
 
+Object and key versions are `u64` numbers, and the boundary requires them as an exact 8-byte big-endian encoding so no precision or byte order is lost in translation. This helper produces that encoding; use it rather than any string or platform-endian shortcut.
+
 The generated Flutter boundary carries `u64` values as exactly 8 big-endian bytes.
 
 ```dart
@@ -37,6 +41,8 @@ Do not use decimal strings, `toString()`, platform-endian values, or floating-po
 
 ## Define the expected content identity
 
+Before encrypting or decrypting, you declare what the content is: which family, object, scope, and version it belongs to. These fields become authenticated identity that the SDK verifies, so they act as a fingerprint of the intended content rather than a display label you can change freely.
+
 ```dart
 final content = api.ObjectContentContextV1(
   familyId: Uint8List.fromList('synthetic-family'.codeUnits),
@@ -50,6 +56,8 @@ final content = api.ObjectContentContextV1(
 These fields are authenticated identity. They are not display names and do not grant authorization.
 
 ## Encrypt
+
+Encrypting hands your plaintext to the Rust core, which protects it with a fresh content-encryption key (CEK) and returns only the public encrypted bundle. You never see or handle the CEK yourself.
 
 ```dart
 final plaintext = Uint8List.fromList(
@@ -80,6 +88,8 @@ The bundle contains encrypted data and authenticated metadata, never CEK, KWK, e
 
 ## Decrypt
 
+Decrypting checks that the bundle really matches the content identity you expected, then returns plaintext only after that check passes. Supply the expected identity from your own application state, so a swapped or tampered bundle cannot masquerade as the object you meant to open.
+
 Supply `content` again as the independently expected identity. Never derive the expected identity from the bundle itself.
 
 ```dart
@@ -95,6 +105,8 @@ final opened = await operations.decryptObjectVersionV1(
 Plaintext is returned only after complete authentication. Any family, object, scope, object-version, schema, key-version, nonce, ciphertext, or wrapped-CEK mismatch must return an error with no partial plaintext.
 
 ## Re-key without re-encrypting content
+
+Re-keying adds a new wrapped copy of the same content key under different group key material, for example after the group's keys evolve. Because it is additive, keeping the old wrap alongside the new one preserves access for anyone who still needs it, and the content itself is never touched.
 
 Re-keying changes the CEK wrap for the same scope. It does not encrypt the object content again.
 
@@ -156,6 +168,8 @@ Keep the old wrap when historical decryption is required. Re-keying is additive,
 
 ## Store the encrypted bundle
 
+The bundle is only useful, and only verifiable, as a whole, so persist all of its fields together. Storing a subset breaks the SDK's ability to re-authenticate everything on decrypt.
+
 Persist all bundle fields together:
 
 ```text
@@ -176,6 +190,8 @@ Never persist:
 - caller-created authorization flags.
 
 ## Handle errors
+
+Object operations throw a typed `FfiError` you branch on by `code`. Handle each case for what it means rather than papering over it: notably, never reveal which authenticated field failed, and keep the production gate closed on `unsupportedProtocol`.
 
 ```dart
 try {
@@ -205,6 +221,8 @@ try {
 ```
 
 ## Bounds
+
+The Rust core enforces these exact limits and rejects anything outside them. Do not try to pre-trim, pad, or normalize input in Dart to fit; pass values through as-is and let the core validate.
 
 - plaintext: `0..=16,777,216` bytes;
 - family, object, and scope IDs: `1..=255` UTF-8 bytes each;
