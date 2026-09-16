@@ -31,7 +31,7 @@ const deviceId = crypto.getRandomValues(new Uint8Array(32));
 const lifecycle = await RumpunLifecycle.open(deviceId);
 ```
 
-Persist the stable application device ID through the approved device-identity layer, not logs or analytics. `open()` acquires an exclusive Web Lock (a browser primitive that lets only one tab hold a named lock at a time); a competing tab fails with `ReplayReservationConflict`, the error that signals another owner already holds that device, instead of silently queueing.
+Persist the stable application device ID through the approved device-identity layer, not logs or analytics. `open()` acquires an exclusive Web Lock (a browser primitive that lets only one tab hold a named lock at a time); a competing tab fails with `ReplayReservationConflict`, the error that signals the call is failing fast rather than silently queueing whenever a competing owner still holds that device, including a stale lock.
 
 ## Enroll
 
