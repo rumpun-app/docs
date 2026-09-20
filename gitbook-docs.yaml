@@ -13,6 +13,7 @@ site:
           title: Untitled
           path: untitled
           default: true
+          draft: true
           content:
             directory: ./rumpun-docs/untitled
             language: id
