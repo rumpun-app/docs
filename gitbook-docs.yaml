@@ -6,7 +6,6 @@ site:
       key: section-1
       title: Rumpun Docs
       path: rumpun-docs
-      default: true
       children:
         - type: space
           key: space-1
@@ -59,6 +58,7 @@ site:
       key: section-5
       title: API Reference
       path: api-reference
+      default: true
       children:
         - type: space
           key: space-5
